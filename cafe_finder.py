@@ -3,16 +3,16 @@ import requests
 
 app = Flask(__name__)
 
-def get_cafes(location):
+def get_cafes(location): # making function for Api calls 
     # Geocode location using Nominatim (OSM)
-    geocode_url = f"https://nominatim.openstreetmap.org/search?q={location}&format=json&limit=3"
+    geocode_url = f"https://nominatim.openstreetmap.org/search?q={location}&format=json&limit=3"  # Api
     response = requests.get(geocode_url, headers={"User-Agent": "CafeFinder/1.0 (nehal@example.com)"})
     if response.status_code != 200 or not response.json():
         return "Bhai, location nahi mili!"
 
-    # Take the most relevant location
+    # Give Information of Neraby Location using json-Api 
     best_loc = max(response.json(), key=lambda x: float(x.get("importance", 0)))
-    lat, lng = float(best_loc["lat"]), float(best_loc["lon"])
+    lat, lng = float(best_loc["lat"]), float(best_loc["lon"]) # gove best Location from all of them 
 
     # Search nearby cafes using Overpass API with 5km radius
     overpass_url = "https://overpass-api.de/api/interpreter"
@@ -26,7 +26,7 @@ def get_cafes(location):
     response = requests.post(overpass_url, data=query, headers={"User-Agent": "CafeFinder/1.0 (nehal@example.com)"})
     if response.status_code != 200:
         return "Bhai, cafes nahi mile!"
-
+     # Json - dictionary 
     cafes_data = response.json()["elements"]
     cafes = []
     for cafe in cafes_data:
@@ -47,14 +47,14 @@ def get_cafes(location):
         cafes.append({"name": name, "address": address, "cuisine": cuisine, "maps_url": maps_url, "rating": rating, "photo": photo, "category": category})
 
     return cafes
-
+ # function call 
 @app.route("/", methods=["GET", "POST"])
 def home():
     cafes = []
     if request.method == "POST":
         location = request.form["location"]
         cafes = get_cafes(location)
-
+# Html5 and CSS for Decoration of web page ,,.....
     html = """
     <!DOCTYPE html>
     <html lang="en">
