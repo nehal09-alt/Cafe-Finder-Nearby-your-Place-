@@ -47,7 +47,7 @@ def get_cafes(location): # making function for Api calls
         cafes.append({"name": name, "address": address, "cuisine": cuisine, "maps_url": maps_url, "rating": rating, "photo": photo, "category": category})
 
     return cafes
- # function call 
+ # flask 
 @app.route("/", methods=["GET", "POST"])
 def home():
     cafes = []
@@ -126,6 +126,6 @@ def home():
     </html>
     """
     return render_template_string(html, cafes=cafes)
-
+# funcion call we can use port or also not it not neccesery 
 if __name__ == "__main__":
     app.run(debug=True , port  = 5000)
